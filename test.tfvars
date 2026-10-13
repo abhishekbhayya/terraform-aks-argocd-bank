@@ -1,0 +1,5 @@
+environment         = "test"
+resource_group_name = "rg-bank-test"
+location            = "Japan East"
+acr_name            = "abhishekregis734"
+keyvault_name_prefix = "secret"

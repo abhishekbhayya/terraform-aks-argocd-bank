@@ -1,0 +1,5 @@
+environment         = "prod"
+resource_group_name = "rg-bank-prod"
+location            = "Japan East"
+acr_name            = "abhishekregis734"
+keyvault_name_prefix = "secret"
