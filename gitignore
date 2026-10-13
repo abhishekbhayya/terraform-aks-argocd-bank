@@ -1,33 +1,33 @@
-# Terraform local state and working files
+# Terraform working directory
 .terraform/
+
+# Terraform state files (may contain secrets)
 *.tfstate
 *.tfstate.*
-*.tfplan
 crash.log
-crash.*.log
+
+# Terraform saved plans
+*.tfplan
+tfplan
+
+# Local Terraform overrides
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Local variable files may contain environment-specific or sensitive values
-*.auto.tfvars
-*.auto.tfvars.json
-secret.tfvars
-secrets.tfvars
-
-# Credentials and kubeconfigs
-.kube/
-.kubeconfig
+# Kubernetes credentials
+aks-kubeconfig
 kubeconfig
 kubeconfig.*
-*.pem
-*.key
+*.kubeconfig
+
+# Environment variables and secrets
 .env
 .env.*
-!.env.example
+*.pem
+*.key
+client_secret.txt
 
-# OS/editor files
-.DS_Store
-Thumbs.db
-.vscode/
+# Local logs
+*.log
