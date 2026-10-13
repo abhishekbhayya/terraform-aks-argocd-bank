@@ -4,11 +4,6 @@ A learning project that provisions Azure infrastructure with Terraform, installs
 
 > **Status:** Learning/demo project. Review the Terraform plan, Azure permissions, image sources, and networking before deploying. The current bootstrap script exposes Argo CD over a public LoadBalancer and prints the initial admin password to the terminal. Do not use this setup for production without hardening it.
 
-## Suggested GitHub repository name
-
-`terraform-aks-argocd-bank-of-anthos`
-
-Alternative: `azure-aks-gitops-bank-of-anthos`.
 
 ## Architecture
 
@@ -209,16 +204,26 @@ The `local-exec` provisioners run on the machine executing Terraform. Keep the P
 
 ## Verify the deployment
 
-```powershell
-az aks get-credentials --resource-group "<RESOURCE_GROUP>" --name "<AKS_CLUSTER_NAME>" --overwrite-existing
+# Retrieve kubeconfig from Azure Key Vault
+az keyvault secret show `
+  --vault-name secretweifh `
+  --name kubeconfig `
+  --query value `
+  -o tsv | Out-File -Encoding utf8 .\aks-kubeconfig
+
+# Configure kubectl to use the retrieved kubeconfig
+$env:KUBECONFIG = "$PWD\aks-kubeconfig"
+
+# Add kubectl to PATH (if installed in this location)
+$env:Path += ";$HOME\.azure-kubectl"
+
+# Verify cluster access
 kubectl get nodes
 kubectl get pods -n argocd
 kubectl get svc -n argocd
 kubectl get applications -n argocd
 kubectl get pods -n default
 kubectl get svc -n default
-terraform output
-```
 
 The bootstrap script prints the Argo CD URL, username (`admin`), and initial admin password in the terminal at the end of the run. Keep that output private. If the password needs to be retrieved again, first authenticate to the cluster and run:
 
